@@ -46,13 +46,14 @@ function ArtistRegister() {
       return;
     }
 
-
-   await artistAxiosInstance.post('/artist/signup',{
+    console.log(name)
+   await artistAxiosInstance.post('/signup',{
     name,
     email,
     password,
    }).then((res)=>{
     toast.success(res.data.message,"Artist Registered");
+
      navigate('/artist/login')
    }).catch((err)=>{
     console.log(err);

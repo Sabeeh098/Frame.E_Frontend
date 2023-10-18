@@ -117,7 +117,7 @@ const Login = ({ url, name }) => {
     <div style={backgroundStyle}>
       <div className="min-h-screen flex flex-col justify-center items-center py-12 lg:px-8 bg-opacity-50 bg-white">
         <div className="container min-w-full min-h-min bg-slate-700 pt-20 pb-19 pb-10" style={{ backgroundImage: `url(${bg})` }}>
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-opacity-80 rounded-lg  p-6 ">
+          <div className="sm:mx-auto sm:w-full sm:max-w-sm bg-opacity-80  border rounded-lg  p-6 ">
                 <h2 className="mt-3 text-center text-2xl font-bold leading-9 text-gray-900 pb-6">
                 {name === "artist" ? "Welcome back Artist" : "Login to your Account"}
                </h2>
@@ -145,7 +145,7 @@ const Login = ({ url, name }) => {
                       type="email"
                       autoComplete="email"
                       required
-                      className="block w-full rounded-md border-0 py-1.5 bg-white text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  focus:ring-inset  sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 bg-white text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  focus:ring-inset  sm:text-sm sm:leading-6 pl-2"
                     />
                 </div>
             </div>
@@ -176,7 +176,7 @@ const Login = ({ url, name }) => {
                   onChange={handleChange}
                   autoComplete="current-password"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  focus:ring-inset  sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  focus:ring-inset  sm:text-sm sm:leading-6 pl-2"
                 />
               </div>
             </div>
@@ -191,13 +191,37 @@ const Login = ({ url, name }) => {
             </div>
           </form>
 
-          <p className="mt-10 text-center text-sm text-gray-500 hover:underline cursor-pointer">
+          {/* <p className="mt-10 text-center text-sm text-black hover:underline cursor-pointer">
             Dont have an Account?{" "}
             <a
               href="#"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             ></a>
-          </p>
+          </p> */}
+
+<p className="mt-10 text-center text-sm text-black hover:underline cursor-pointer">
+  {name === "artist" ? (
+    <>
+      Don't have an Artist Account?{" "}
+      <span
+        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+        onClick={() => navigate("/artist/signup")}
+      >
+        Sign up as an Artist
+      </span>
+    </>
+  ) : (
+    <>
+      Don't have an Account?{" "}
+      <span
+        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+        onClick={() => navigate("/signup")}
+      >
+        Sign up
+      </span>
+    </>
+  )}
+</p>
         </div>
         </div>
       </div>

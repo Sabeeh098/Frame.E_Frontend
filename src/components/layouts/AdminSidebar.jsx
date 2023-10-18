@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 
+// eslint-disable-next-line react/prop-types
 function AdminSidebar({children}) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
   

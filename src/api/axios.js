@@ -7,6 +7,7 @@ const userAxiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+
 });
 
 // Create another Axios instance for the Artist API

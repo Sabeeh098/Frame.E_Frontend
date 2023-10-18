@@ -1,22 +1,346 @@
-// import { useSelector } from "react-redux"
-// import { NavLink } from "react-router-dom"
-// import {userLogout} from '../../store/slice/user'
-// import { useDispatch } from "react-redux"
-
-import Navbar from "../../components/layouts/Navbar"
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHeart,
+  faComment,
+  faPaperPlane,
+  faAngleLeft,
+  faAngleRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { userAxiosInstance } from "../../api/axios";
+import { useSelector } from "react-redux";
+import Navbar from "../../components/layouts/Navbar";
+import PostModal from "../../components/User/PostModal";
 
 function Home() {
-    // const dispatch = useDispatch()
-    // const {token} =useSelector((state)=>state.user)
+  const token = useSelector((state) => state.user.token);
+  const userId = useSelector((state) => state.user.id);
+
+  const [currentPostIndex, setCurrentPostIndex] = useState(0);
+  const [posts, setPosts] = useState([]);
+  const [likedPost, setLikedPost] = useState([]);
+  const [openCommentBoxes, setOpenCommentBoxes] = useState({});
+  const [commentText, setCommentText] = useState("");
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+
+ 
+
+  useEffect(() => {
+    fetchPosts();
+    fetchLikedPosts();
+  }, []);
+
+  const fetchLikedPosts = async () => {
+    try {
+      const response = await userAxiosInstance.get("/likedposts", userId, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setLikedPost(response.data.likedPosts);
+    } catch (error) {
+      console.log("Error in fetching liked posts", error);
+    }
+  };
+
+  const fetchPosts = async () => {
+    try {
+      const response = await userAxiosInstance.get("/home");
+      setPosts(response.data.artistpost);
+    } catch (error) {
+      console.log("Error in fetching posts", error);
+    }
+  };
+  console.log(posts);
+
+  const likeOrUnlikePost = async (postId) => {
+    try {
+      if (likedPost[postId]) {
+        await userAxiosInstance.post(
+          "/unlike",
+          { postId, userId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setLikedPost((prevLiked) => ({ ...prevLiked, [postId]: false }));
+      } else {
+        await userAxiosInstance.post(
+          "/like",
+          { postId, userId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setLikedPost((prevLiked) => ({ ...prevLiked, [postId]: true }));
+      }
+    } catch (error) {
+      console.log("Error in liking/unliking post", error);
+    }
+  };
+
+  const toggleCommentBox = (postId) => {
+    setOpenCommentBoxes((prevOpenBoxes) => ({
+      ...prevOpenBoxes,
+      [postId]: !prevOpenBoxes[postId],
+    }));
+  };
+  const goToPreviousPost = () => {
+    setCurrentPostIndex((prevIndex) =>
+      prevIndex === 0 ? posts.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToNextPost = () => {
+    setCurrentPostIndex((prevIndex) =>
+      prevIndex === posts.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const addComment = async (postId) => {
+    try {
+      if (!commentText) {
+        console.log("Pleasae add comment ");
+      }
+      const response = await userAxiosInstance.post(
+        "/addComment",
+        { postId, userId, text: commentText },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data.post);
+      if (response.status === 200) {
+        console.log("success");
+        setCommentText("");
+      } else {
+        console.error("error Adding in comment", response.data);
+      }
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+  const openPostModal = (post) => {
+    console.log(post);
+    setSelectedPost(post);
+    setShowPostModal(true);
+    console.log(setShowPostModal);
+  };
+
+  const closePostModal = () => {
+    setSelectedPost(null);
+    setShowPostModal(false);
+  };
+
+  const currentPost = posts[currentPostIndex];
+
   return (
     <>
-     <div>
-     <Navbar/>
-     <h1>Home page</h1>
-     </div>
+      <Navbar />
+      <div className="w-full h-auto bg-neutral-100 justify-start items-start flex flex-col md:flex-row gap-5 p-5">
+        <div className="w-full md:w-[50%] flex flex-col justify-start items-start">
+          <div className="w-644 h-478 bg-stone-300 flex flex-col justify-start items-start">
+            <div className="w-full h-full bg-neutral-200 flex justify-center items-center">
+              <img
+                className="w-2/4 h-2/4 object-contain"
+                src="https://i.pinimg.com/564x/14/ce/5e/14ce5e867add3a47452596cd9d27fdcc.jpg"
+                alt="Placeholder"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="w-full md:w-[50%] p-10 pt-4 flex flex-col justify-start items-start">
+          <div className="w-full h-auto relative">
+            <div className="h-12 pr-[88px] left-0 top-[123px] absolute flex flex-col justify-start items-start">
+              <div className="text-black text-4xl md:text-5xl font-normal font-['Inter'] leading-[48px]">
+                Find the art you love
+              </div>
+            </div>
+            <div className="pr-[13px] left-0 top-[191px] absolute flex justify-start items-center">
+              <div className="text-neutral-500 text-xl md:text-2xl font-normal font-['Inter'] leading-loose">
+                Discover incredible artworks and explore your passion
+                forcreativity with us.
+                <br />
+              </div>
+            </div>
+            <div className="h-[50px] md:h-[60px] left-0 top-[327px] absolute flex flex-col justify-start items-center">
+              <div className="w-full md:w-auto h-auto px-4 md:px-8 py-2 md:py-3 rounded-full border border-black flex justify-center items-center">
+                <div className="text-center text-black text-base md:text-lg font-normal font-['Inter'] leading-none">
+                  Start Looking
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="container mx-auto p-8 ml-0">
+        <h1 className="text-4xl font-bold mb-8">Discover Amazing Art</h1>
+        <div className="flex items-center justify-center relative">
+          <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
+            <FontAwesomeIcon
+              icon={faAngleLeft}
+              className="text-black-500 text-6xl cursor-pointer"
+              onClick={goToPreviousPost}
+            />
+          </div>
+          <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+            <FontAwesomeIcon
+              icon={faAngleRight}
+              className="text-black-500 text-6xl cursor-pointer"
+              onClick={goToNextPost}
+            />
+          </div>
+          {currentPost && (
+            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+              <img
+                src={currentPost.photo}
+                alt={currentPost.postName}
+                className="w-full h-96 object-cover"
+              />
+              <div className="p-4">
+                <h2 className="text-xl font-semibold">
+                  {currentPost.postName}
+                </h2>
+                <p className="text-gray-600">By {currentPost?.artist?.name}</p>
+                <div className="mt-2 flex items-center">
+                  <p className="text-lg font-semibold text-green-500">
+                    ₹ {currentPost.price}
+                  </p>
+                  <button className="ml-4 bg-blue-500 text-white px-3 py-1 rounded-md">
+                    Buy Now
+                  </button>
+                </div>
+                <div className="mt-4 flex justify-between">
+                  <button
+                    className={`bg-transparent border-none outline-none mr-4 ${
+                      likedPost[currentPost._id]
+                        ? "text-red-500"
+                        : "text-gray-500"
+                    }`}
+                    onClick={() => likeOrUnlikePost(currentPost._id)}
+                  >
+                    <FontAwesomeIcon icon={faHeart} className="text-2xl" />
+                  </button>
+                  <button
+                    className="bg-transparent border-none outline-none"
+                    onClick={() => toggleCommentBox(currentPost._id)}
+                  >
+                    <FontAwesomeIcon
+                      icon={faComment}
+                      className="text-blue-500 text-2xl"
+                    />
+                  </button>
+                </div>
+                {openCommentBoxes[currentPost._id] && (
+                  <div className="mt-4">
+                    <input
+                      type="text"
+                      placeholder="Type a comment..."
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                      className="w-full border border-gray-300 rounded-md py-2 px-3"
+                    />
+                    <button
+                      className="mt-2 bg-blue-500 text-white py-2 px-4 rounded-md"
+                      onClick={() => addComment(currentPost._id)}
+                    >
+                      <FontAwesomeIcon icon={faPaperPlane} />
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="flex justify-center">
+        <div className="w-full max-w-[1269px] mx-4 md:mx-auto mt-4">
+          <div className="flex flex-wrap justify-between -mx-4">
+            {posts.map((post) => (
+              <div className="w-1/3 p-4" key={post._id}>
+                <div
+                  className="max-w-sm rounded overflow-hidden shadow-lg"
+                  style={{ height: "400px" }}
+                >
+                  <img
+                    className="w-full h-48 object-cover"
+                    src={post.photo}
+                    alt={post.postName}
+                  />
+                  <div className="px-6 py-4">
+                    <div className="font-bold text-xl mb-2">
+                      {post.postName}
+                    </div>
+                    <p className="text-gray-700 text-base">
+                      By {post?.artist?.name}
+                    </p>
+                    <p className="text-gray-700 text-base">
+                     ₹ {post?.price}
+                    </p>
+                  </div>
+                  <div className="px-6 pt-4 pb-2">
+                    <span
+                      className={`inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 ${
+                        likedPost.includes(post._id)
+                          ? "bg-red-500 text-white"
+                          : "bg-gray-200 text-gray-700"
+                      }`}
+                      onClick={() => likeOrUnlikePost(post._id)}
+                    >
+                      <FontAwesomeIcon icon={faHeart} className="text-2xl" />
+                    </span>
+                    <span
+                      className={`inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 ${
+                        openCommentBoxes[post._id]
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200 text-gray-700"
+                      }`}
+                      onClick={() => toggleCommentBox(post._id)}
+                    >
+                      <FontAwesomeIcon icon={faComment} className="text-2xl" />
+                    </span>
+                    <button
+                      className={`inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 bg-gray-200 text-gray-700`}
+                      onClick={() => openPostModal(post)}
+                    >
+                      View Details
+                    </button>
+                    <button
+                      className={`inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2 bg-green-500 text-white`}
+                      onClick={() => buyNow(post)}
+                    >
+                      Buy Now
+                    </button>
+                  </div>
+                  {openCommentBoxes[post._id] && (
+                    <div className="px-6 flex items-center">
+                      <input
+                        type="text"
+                        placeholder="Type a comment..."
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                        className="w-full border border-gray-300 rounded-md py-2 px-3"
+                      />
+                      <button
+                        className="ml-2 bg-blue-500 text-white py-2 px-4 rounded-md"
+                        onClick={() => addComment(post._id, commentText)}
+                      >
+                        <FontAwesomeIcon icon={faPaperPlane} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Conditionally render the PostModal */}
+      {showPostModal && selectedPost && (
+        <PostModal post={selectedPost} closeModal={closePostModal} />
+      )}
     </>
-   
-  )
+  );
 }
 
-export default Home
+export default Home;

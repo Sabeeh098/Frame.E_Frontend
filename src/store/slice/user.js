@@ -7,6 +7,7 @@ const initialState = {
     id:null,
 }
 
+
 export const userAuthSlice = createSlice({
     name:"userAuth",
     initialState,
@@ -19,13 +20,14 @@ export const userAuthSlice = createSlice({
             state.id = action.payload.id;
         },
         userLogout : (state)=>{
-             state.role = null;
-             state.name = null;
-             state.token = null;
-             state.id = null;
+            state.role = null;
+            state.name = null;
+            state.token = null;
+            state.id = null;
         }
     }
 })
+
 
 export const { userLogin,userLogout } = userAuthSlice.actions
 
