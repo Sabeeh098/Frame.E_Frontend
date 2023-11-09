@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { userAxiosInstance } from "../api/axios";
 import { io } from 'socket.io-client';
+import { UserAPI } from "../constants/api";
 
 
 function ChatPage({ senderRole }) {
@@ -25,7 +26,7 @@ function ChatPage({ senderRole }) {
   const artistProfilePicture = location.state ? location.state.artistPhoto : "";
 
   useEffect(() => {
-    const newSocket = io("http://localhost:4000/")
+    const newSocket = io(UserAPI)
     console.log(newSocket)
     setSocket(newSocket);
     newSocket.on("error",(error) =>{
@@ -34,7 +35,7 @@ function ChatPage({ senderRole }) {
     return () => {
       newSocket.disconnect()
     };
-  }, ["http://localhost:4000/"])
+  }, [UserAPI])
   
   useEffect(() => {
     if (socket && selectedChat) {

@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { artistAxiosInstance } from "../../api/axios";
 import { useSelector } from "react-redux";
 import { io } from 'socket.io-client';
+import { UserAPI } from "../../constants/api";
 
 function ChatPage({ senderRole }) {
   const token = useSelector((state) => state.artist.token);
@@ -14,7 +15,7 @@ function ChatPage({ senderRole }) {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:4000/");
+    const newSocket = io(UserAPI);
     setSocket(newSocket);
     newSocket.on("error", (error) => {
       console.log(error);
