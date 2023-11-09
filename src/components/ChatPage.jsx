@@ -51,18 +51,7 @@ function ChatPage({ senderRole }) {
   const sendMessage = async (e) => {
     e.preventDefault()
     try {
-      // await userAxiosInstance.post('/sendMessage',{
-        // chatId : selectedChat._id,
-        // content: newMessage,
-        // senderRole,
-        // senderId:{_id:userId},
-        // time:new Date(),
-      // },{
-      //   headers:{
-      //       Authorization:`Bearer ${token}`
-      //     }
-      // }
-      // );
+    
       const newMessageData = {
         chatId : selectedChat._id,
         content: newMessage,
@@ -184,48 +173,47 @@ function ChatPage({ senderRole }) {
 
  
   {/* Chat Messages */}
-  <div className="h-screen overflow-y-auto p-4 pb-36">
+          <div className="h-screen overflow-y-auto p-4 pb-36">
           {allMessages.length > 0 ? (
-           allMessages.map((message, index) => (
-            <div
-              key={index}
-              className={`chat ${
-                message.senderRole === "Artist" ? "chat-start" : "chat-end"
-              }`}
-            >
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    src={
-                      message.senderRole === "Artist"
-                        ? selectedChat.artist?.profilePicture
-                        : message.senderRole === "User"
-                        ? selectedChat.user?.photo
-                        : ""
-                    }
-                    alt="Profile Picture"
-                  />
+            allMessages.map((message, index) => (
+              <div
+                key={index}
+                className={`chat ${
+                  message.senderType === "Artist" ? "chat-start" : "chat-end"
+                }`}
+              >
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      src={
+                        message.senderType === "Artist"
+                          ? selectedChat.artist?.profilePicture
+                          : message.senderType === "User"
+                          ? selectedChat.user?.photo
+                          : ""
+                      }
+                      alt="Profile Picture"
+                    />
+                  </div>
+                </div>
+                <div className="chat-header">
+                  {message.senderType === "Artist"
+                    ? selectedChat.artist?.name
+                    : message.senderType === "User"
+                    ? "You"
+                    : ""}
+                  <time className="text-xs opacity-50">{message.time}</time>
+                </div>
+                <div className="chat-bubble">{message.content}</div>
+                <div className="chat-footer opacity-50">
+                  {message.senderType === "User"
+                    ? "Delivered"
+                    : message.senderType === "Artist"
+                    ? "Seen at " + message.time
+                    : ""}
                 </div>
               </div>
-              <div className="chat-header">
-                {message.senderRole === "Artist"
-                  ? selectedChat.artist?.name
-                  : message.senderRole === "User"
-                  ? "You"
-                  : ""}
-                <time className="text-xs opacity-50">{message.time}</time>
-              </div>
-              <div className="chat-bubble">{message.content}</div>
-              <div className="chat-footer opacity-50">
-                {message.senderRole === "User"
-                  ? "Delivered"
-                  : message.senderRole === "Artist"
-                  ? "Seen at " + message.time
-                  : ""}
-              </div>
-            </div>
-          ))
-          
+            ))
           ) : (
             <div className="text-center mt-24">
               <p className="text-gray-400">

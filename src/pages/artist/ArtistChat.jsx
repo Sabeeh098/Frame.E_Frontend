@@ -154,17 +154,17 @@ function ChatPage({ senderRole }) {
               <div
                 key={index}
                 className={`chat ${
-                  message.senderType === "Artist" ? "chat-start" : "chat-end"
+                  message.senderType === "User" ? "chat-start" : "chat-end"
                 }`}
               >
                 <div className="chat-image avatar">
                   <div className="w-10 rounded-full">
                     <img
                       src={
-                        message.senderType === "Artist"
-                          ? selectedChat.artist?.profilePicture
-                          : message.senderType === "User"
+                        message.senderType === "User"
                           ? selectedChat.user?.photo
+                          : message.senderType === "Artist"
+                          ? selectedChat.artist?.profilePicture
                           : ""
                       }
                       alt="Profile Picture"
@@ -181,9 +181,9 @@ function ChatPage({ senderRole }) {
                 </div>
                 <div className="chat-bubble">{message.content}</div>
                 <div className="chat-footer opacity-50">
-                  {message.senderType === "Artist"
+                  {message.senderType === "User"
                     ? "Delivered"
-                    : message.senderType === "User"
+                    : message.senderType === "Artist"
                     ? "Seen at " + message.time
                     : ""}
                 </div>
