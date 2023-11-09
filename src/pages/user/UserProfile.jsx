@@ -8,7 +8,6 @@ function UserProfile() {
   const token = useSelector((state) => state.user.token);
   const [isProfileAvailable, setIsProfileAvailable] = useState(false);
   const [profile, setProfile] = useState([]);
-
   const fetchProfile = async () => {
     try {
       console.log("token;", token);

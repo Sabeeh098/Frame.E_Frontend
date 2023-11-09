@@ -16,7 +16,7 @@ function Navbar() {
     // Dispatch the logout action here
     dispatch(userLogout());
     // Redirect to the home page or any other desired page after logout
-    navigate("/");
+    navigate("/login");
   };
 
   const toggleDropdown = () => {

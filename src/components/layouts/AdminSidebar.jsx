@@ -33,16 +33,22 @@ function AdminSidebar({children}) {
               Users
             </Link>
             <Link
-              to="/products"
+              to="/admin/artists"
               className="block hover:bg-gray-600 px-4 py-2 rounded transition duration-300"
             >
               Artists
             </Link>
             <Link
-              to="/products"
+              to="/admin/products"
               className="block hover:bg-gray-600 px-4 py-2 rounded transition duration-300"
             >
               Products
+            </Link>
+            <Link
+              to="/admin/comments"
+              className="block hover:bg-gray-600 px-4 py-2 rounded transition duration-300"
+            >
+              Comments
             </Link>
             {/* Add more navigation links */}
           </nav>

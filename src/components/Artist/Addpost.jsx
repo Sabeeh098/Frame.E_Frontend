@@ -1,25 +1,23 @@
-import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { artistAxiosInstance } from '../../api/axios';
+import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { artistAxiosInstance } from "../../api/axios";
-
-
-// eslint-disable-next-line react/prop-types
-function Addpost({token}) {
+function Addpost({ token }) {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     photo: null, // File input
-    price: "",
+    price: '',
+    category: '', // Category dropdown
   });
-  // const navigate = useNavigate();
+
+  const categories = ['Visual Arts', 'Crafts', 'Fine Arts', 'Drawing', 'Other']; // Define your categories
 
   const openModal = () => {
     setShowModal(true);
-    // navigate("/artist/posts");
   };
 
   const closeModal = () => {
@@ -28,9 +26,8 @@ function Addpost({token}) {
 
   const handleInputChange = (event) => {
     const { name, value, files } = event.target;
-    console.log(files,'====');
 
-    if (name == "photo" && files.length > 0) {
+    if (name === 'photo' && files.length > 0) {
       const selectedFile = files[0];
       const reader = new FileReader();
 
@@ -50,39 +47,49 @@ function Addpost({token}) {
   const handleSaveChanges = async () => {
     try {
       // Send the postData object as the request data
-      console.log(formData,'==========');
-      const response = await artistAxiosInstance.post("/profile", {postName:formData.name,price:formData.price,description:formData.description,photo:formData.photo}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await artistAxiosInstance.post(
+        '/profile',
+        {
+          postName: formData.name,
+          price: formData.price,
+          description: formData.description,
+          photo: formData.photo,
+          category: formData.category,
         },
-      });
-  
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       if (response.status === 201) {
-        console.log("Post Created Successfully");
+        console.log('Post Created Successfully');
         closeModal();
         setFormData({
-          name: "",
-          description: "",
+          name: '',
+          description: '',
           photo: null,
-          price: "",
+          price: '',
+          category: '',
         });
       } else {
-        console.error("Error creating artist post:", response.data.message);
+        console.error('Error creating artist post:', response.data.message);
       }
     } catch (error) {
-      console.error("Error creating artist post:", error);
+      console.error('Error creating artist post:', error);
     }
   };
 
   return (
     <>
-   <button
-  className="bg-slate-500 text-white active:bg-pink-600 font-bold uppercase text-sm w-20 h-20 flex items-center justify-center rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-  type="button"
-  onClick={openModal}
->
-  <FontAwesomeIcon icon={faPlus} />
-</button>
+      <button
+        className="bg-slate-500 text-white active:bg-pink-600 font-bold uppercase text-sm w-20 h-20 flex items-center justify-center rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        type="button"
+        onClick={openModal}
+      >
+        <FontAwesomeIcon icon={faPlus} />
+      </button>
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white w-full max-w-md p-5 rounded-lg shadow-lg">
@@ -121,6 +128,29 @@ function Addpost({token}) {
               </div>
               <div className="mb-4">
                 <label
+                  htmlFor="category"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Category
+                </label>
+                <select
+                  id="category"
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:border-blue-500 text-black"
+                >
+                  <option value="">Select Category</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-4">
+                <label
                   htmlFor="photo"
                   className="block text-sm font-medium text-gray-700"
                 >
@@ -133,11 +163,7 @@ function Addpost({token}) {
                   name="photo"
                   accept="image/*"
                   onChange={handleInputChange}
-                  // Hide the file input visually
                 />
-              
-                
-             
               </div>
               <div className="mb-4">
                 <label

@@ -35,7 +35,7 @@ function Profile() {
       });
       const { name, email, description, profilePicture, artCategories, posts } =
         response.data.artist;
-      console.log(posts.postName)
+      
       setProfile({
         name,
         email,
@@ -51,7 +51,7 @@ function Profile() {
 
   useEffect(() => {
     fetchProfile();
-  }, [isUpdateProfileModalOpen]);
+  }, [isUpdateProfileModalOpen,profile]);
 
   return (
     <div>
@@ -100,7 +100,7 @@ function Profile() {
           <div className="flex flex-col items-center justify-center relative">
           <div className="grid grid-cols-2 gap-4">
         {profile.posts.length > 0 ? (
-          profile.posts.map((post, index) => (
+          profile.posts.slice(-4).map((post, index) => (
             <div key={index}>
               <img
                 src={post?.photo}
