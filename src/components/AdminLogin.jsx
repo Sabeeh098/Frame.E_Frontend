@@ -6,7 +6,7 @@ import { adminLogin } from "../store/slice/admin";
 import "react-toastify/dist/ReactToastify.css";
 import { adminAxiosInstance } from "../api/axios";
 
-const AdminLogin = () => {
+function AdminLogin () {
   const dispatch = useDispatch();
   // const navigate = useNavigate();
 

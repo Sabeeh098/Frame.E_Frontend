@@ -7,7 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import Home from '../src/pages/user/Home'
 import ArtistRegister from './components/ArtistRegister';
 import ArtistHome from './pages/artist/ArtistHome';
-import AdminLogin from './components/adminLogin';
+
 import AdminHome from './pages/admin/AdminHome';
 import Users from './pages/admin/Users';
 import Profile from './pages/artist/Profile';
@@ -28,6 +28,8 @@ import Artistfull from './pages/admin/Artistfull';
 import VisualArts from './components/Artist/VisualArts';
 import Comments from './pages/admin/Comments';
 import OrdersPage from './pages/artist/OrdersPage';
+import AdminLogin from './components/adminLogin';
+
 
 
 
