@@ -26,16 +26,19 @@ function ChatPage({ senderRole }) {
   const artistProfilePicture = location.state ? location.state.artistPhoto : "";
 
   useEffect(() => {
-    const newSocket = io(UserAPI)
-    console.log(newSocket)
+    const newSocket = io(UserAPI, { transports: ['websocket'], upgrade: false });
+    console.log(newSocket);
     setSocket(newSocket);
-    newSocket.on("error",(error) =>{
-      console.log(error)
-    }) ;
+
+    newSocket.on("error", (error) => {
+      console.log(error);
+    });
+
     return () => {
-      newSocket.disconnect()
+      newSocket.disconnect();
     };
-  }, [UserAPI])
+  }, [UserAPI]);
+
   
   useEffect(() => {
     if (socket && selectedChat) {
@@ -47,24 +50,23 @@ function ChatPage({ senderRole }) {
   }, [selectedChat, socket, userId]);
 
 
-
   const sendMessage = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-    
       const newMessageData = {
-        chatId : selectedChat._id,
+        chatId: selectedChat._id,
         content: newMessage,
         senderRole,
-        senderId:{_id:userId},
-        time:new Date(),
-      }
-      socket.emit(`send_message`,newMessageData,selectedChat._id)
+        senderId: { _id: userId },
+        time: new Date(),
+      };
+      socket.emit(`send_message`, newMessageData, selectedChat._id);
       setNewMessage('');
     } catch (error) {
-      console.log(error)
+      console.error(error);
     }
-  }
+  };
+
   useEffect(() => {
     async function fetchChat() {
       await userAxiosInstance.get(
