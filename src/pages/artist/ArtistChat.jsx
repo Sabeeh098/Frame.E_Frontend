@@ -15,7 +15,7 @@ function ChatPage({ senderRole }) {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io(UserAPI);
+    const newSocket = io(artistAPI);
     setSocket(newSocket);
     newSocket.on("error", (error) => {
       console.log(error);

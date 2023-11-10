@@ -26,7 +26,7 @@ function ChatPage({ senderRole }) {
   const artistProfilePicture = location.state ? location.state.artistPhoto : "";
 
   useEffect(() => {
-    const newSocket = io('https://frame-e.onrender.com/')
+    const newSocket = io(UserAPI)
     console.log(newSocket)
     setSocket(newSocket);
     newSocket.on("error",(error) =>{
@@ -35,7 +35,7 @@ function ChatPage({ senderRole }) {
     return () => {
       newSocket.disconnect()
     };
-  }, ['https://frame-e.onrender.com/'])
+  }, [UserAPI])
   
   useEffect(() => {
     if (socket && selectedChat) {
