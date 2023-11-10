@@ -46,9 +46,12 @@ function ChatPage({ senderRole }) {
       socket.emit("join_room", selectedChat._id);
       
     }
-    socket.on("message_response", (newMessage) => {
-      setAllMessages((prevMessages) => [...prevMessages, newMessage]);
+    if(socket){
+
+      socket.on("message_response", (newMessage) => {
+        setAllMessages((prevMessages) => [...prevMessages, newMessage]);
     });
+      }
   }, [selectedChat, socket, userId]);
 
   // useEffect(()=>{
