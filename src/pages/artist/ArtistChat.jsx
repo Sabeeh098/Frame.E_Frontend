@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { artistAxiosInstance } from "../../api/axios";
 import { useSelector } from "react-redux";
 import { io } from 'socket.io-client';
-import { UserAPI } from "../../constants/api";
+import { UserAPI, artistAPI } from "../../constants/api";
 
 function ChatPage({ senderRole }) {
   const token = useSelector((state) => state.artist.token);
