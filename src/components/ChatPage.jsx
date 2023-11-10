@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { userAxiosInstance } from "../api/axios";
@@ -19,66 +19,52 @@ function ChatPage({ senderRole }) {
   const [allMessages,setAllMessages] = useState([])
   const [isChatOpen,setIsChatOpen] = useState(false)
   const [previousChat, setPreviousChat] = useState([]);
-  let socket;
+  const [socket,setSocket] = useState(null)
   const navigate = useNavigate();
   const location = useLocation();
   const artistName = location.state ? location.state.artistName : "";
   const artistProfilePicture = location.state ? location.state.artistPhoto : "";
-   const bottomRef = useRef(null)
 
   useEffect(() => {
-    const newSocket = io(UserAPI, { transports: ['websocket'], upgrade: false });
-    console.log(newSocket);
-    socket = newSocket
-
-    newSocket.on("error", (error) => {
-      console.log(error);
-    });
-
+    const newSocket = io(UserAPI)
+    console.log(newSocket)
+    setSocket(newSocket);
+    newSocket.on("error",(error) =>{
+      console.log(error)
+    }) ;
     return () => {
-      newSocket.disconnect();
+      newSocket.disconnect()
     };
-  }, [UserAPI]);
-
+  }, [UserAPI])
   
   useEffect(() => {
     if (socket && selectedChat) {
       socket.emit("join_room", selectedChat._id);
-      
-    }
-    if(socket){
-
       socket.on("message_response", (newMessage) => {
         setAllMessages((prevMessages) => [...prevMessages, newMessage]);
-    });
-      }
+      });
+    }
   }, [selectedChat, socket, userId]);
 
-  // useEffect(()=>{
-  //   if(socket){
-      
-  // }
-  //   bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  // })
 
 
   const sendMessage = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
+    
       const newMessageData = {
-        chatId: selectedChat._id,
+        chatId : selectedChat._id,
         content: newMessage,
         senderRole,
-        senderId: { _id: userId },
-        time: new Date(),
-      };
-      socket.emit(`send_message`, newMessageData, selectedChat._id);
+        senderId:{_id:userId},
+        time:new Date(),
+      }
+      socket.emit(`send_message`,newMessageData,selectedChat._id)
       setNewMessage('');
     } catch (error) {
-      console.error(error);
+      console.log(error)
     }
-  };
-
+  }
   useEffect(() => {
     async function fetchChat() {
       await userAxiosInstance.get(
@@ -160,7 +146,6 @@ function ChatPage({ senderRole }) {
         </li>
       ))}
     </ul>
-    <div ref={bottomRef} />
   </div>
 
 
