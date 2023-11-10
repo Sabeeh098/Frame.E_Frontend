@@ -24,6 +24,7 @@ function ChatPage({ senderRole }) {
   const location = useLocation();
   const artistName = location.state ? location.state.artistName : "";
   const artistProfilePicture = location.state ? location.state.artistPhoto : "";
+   const bottomRef = useRef(null)
 
   useEffect(() => {
     const newSocket = io(UserAPI, { transports: ['websocket'], upgrade: false });
@@ -43,11 +44,15 @@ function ChatPage({ senderRole }) {
   useEffect(() => {
     if (socket && selectedChat) {
       socket.emit("join_room", selectedChat._id);
-      socket.on("message_response", (newMessage) => {
-        setAllMessages((prevMessages) => [...prevMessages, newMessage]);
-      });
     }
   }, [selectedChat, socket, userId]);
+
+  useEffect(()=>{
+    socket.on("message_response", (newMessage) => {
+      setAllMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  })
 
 
   const sendMessage = async (e) => {
@@ -148,6 +153,7 @@ function ChatPage({ senderRole }) {
         </li>
       ))}
     </ul>
+    <div ref={bottomRef} />
   </div>
 
 
