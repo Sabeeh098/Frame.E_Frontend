@@ -48,9 +48,11 @@ function ChatPage({ senderRole }) {
   }, [selectedChat, socket, userId]);
 
   useEffect(()=>{
-    socket.on("message_response", (newMessage) => {
+    if(socket){
+      socket.on("message_response", (newMessage) => {
       setAllMessages((prevMessages) => [...prevMessages, newMessage]);
     });
+  }
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   })
 
