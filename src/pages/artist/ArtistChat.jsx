@@ -12,7 +12,7 @@ function ChatPage({ senderRole }) {
   const [newMessage, setNewMessage] = useState("");
   const [selectedChat, setSelectedChat] = useState({});
   const [allMessages, setAllMessages] = useState([]);
-  const [socket, setSocket] = useState(null);
+  let socket
 
   useEffect(() => {
     const newSocket = io(artistAPI, { transports: ['websocket'], upgrade: false });
