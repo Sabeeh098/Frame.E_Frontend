@@ -28,7 +28,7 @@ import Artistfull from './pages/admin/Artistfull';
 import VisualArts from './components/Artist/VisualArts';
 import Comments from './pages/admin/Comments';
 import OrdersPage from './pages/artist/OrdersPage';
-import AdminLogin from './components/adminLogin';
+import AdminLogin from './components/AdminLogin';
 
 
 
