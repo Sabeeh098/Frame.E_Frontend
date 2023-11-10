@@ -12,13 +12,11 @@ function ChatPage({ senderRole }) {
   const [newMessage, setNewMessage] = useState("");
   const [selectedChat, setSelectedChat] = useState({});
   const [allMessages, setAllMessages] = useState([]);
-  let socket
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const newSocket = io(artistAPI, { transports: ['websocket'], upgrade: false });
-    console.log(newSocket);
-    socket = newSocket
-
+    setSocket(newSocket);
     newSocket.on("error", (error) => {
       console.log(error);
     });
@@ -26,7 +24,8 @@ function ChatPage({ senderRole }) {
     return () => {
       newSocket.disconnect();
     };
-  }, [artistAPI]);
+  }, []);
+
    useEffect(() => {
     if (socket && selectedChat) {
       socket.emit("join_room", selectedChat._id);
