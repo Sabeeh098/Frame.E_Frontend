@@ -15,7 +15,7 @@ function ChatPage({ senderRole }) {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io(artistAPI);
+    const newSocket = io(artistAPI, { transports: ['websocket'], upgrade: false });
     setSocket(newSocket);
     newSocket.on("error", (error) => {
       console.log(error);
@@ -30,7 +30,9 @@ function ChatPage({ senderRole }) {
     if (socket && selectedChat) {
       socket.emit("join_room", selectedChat._id);
       socket.on("message_response", (newMessage) => {
+        
         // Add the new message to the chat interface
+        console.log(newMessage+'newmessage')
         setAllMessages((prevMessages) => [...prevMessages, newMessage]);
       });
     }

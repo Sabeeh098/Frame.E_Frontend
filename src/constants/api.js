@@ -1,3 +1,3 @@
-export const UserAPI ='https://frame-e.onrender.com/'  
-export const artistAPI = 'https://frame-e.onrender.com/artist' 
-export const adminAPI = 'https://frame-e.onrender.com/admin'
+export const UserAPI ='http://localhost:4000/'  
+export const artistAPI = 'http://localhost:4000/artist' 
+export const adminAPI = 'http://localhost:4000/admin'
