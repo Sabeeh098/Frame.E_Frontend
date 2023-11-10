@@ -28,7 +28,7 @@ function ChatPage({ senderRole }) {
 
    useEffect(() => {
     if (socket && selectedChat) {
-      socket.emit("join_room", selectedChat._id, artistId);
+      socket.emit("join_room", selectedChat._id);
       socket.on("message_response", (newMessage) => {
         // Add the new message to the chat interface
         setAllMessages((prevMessages) => [...prevMessages, newMessage]);

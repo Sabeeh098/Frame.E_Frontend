@@ -44,17 +44,19 @@ function ChatPage({ senderRole }) {
   useEffect(() => {
     if (socket && selectedChat) {
       socket.emit("join_room", selectedChat._id);
+      
     }
-  }, [selectedChat, socket, userId]);
-
-  useEffect(()=>{
-    if(socket){
-      socket.on("message_response", (newMessage) => {
+    socket.on("message_response", (newMessage) => {
       setAllMessages((prevMessages) => [...prevMessages, newMessage]);
     });
-  }
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  })
+  }, [selectedChat, socket, userId]);
+
+  // useEffect(()=>{
+  //   if(socket){
+      
+  // }
+  //   bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // })
 
 
   const sendMessage = async (e) => {
