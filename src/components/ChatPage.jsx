@@ -19,7 +19,7 @@ function ChatPage({ senderRole }) {
   const [allMessages,setAllMessages] = useState([])
   const [isChatOpen,setIsChatOpen] = useState(false)
   const [previousChat, setPreviousChat] = useState([]);
-  const [socket,setSocket] = useState(null)
+  let socket;
   const navigate = useNavigate();
   const location = useLocation();
   const artistName = location.state ? location.state.artistName : "";
@@ -29,7 +29,7 @@ function ChatPage({ senderRole }) {
   useEffect(() => {
     const newSocket = io(UserAPI, { transports: ['websocket'], upgrade: false });
     console.log(newSocket);
-    setSocket(newSocket);
+    socket = newSocket
 
     newSocket.on("error", (error) => {
       console.log(error);
