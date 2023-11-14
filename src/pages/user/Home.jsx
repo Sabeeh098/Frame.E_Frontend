@@ -30,6 +30,7 @@ function Home() {
     price: "",
     postId: "",
   });
+  console.log(posts);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = (price, postId) => {
     setPay({ price: price, postId: postId });
@@ -191,9 +192,12 @@ function Home() {
         </div>
       </div>
 
-      <div className="container mx-auto p-8 ml-0">
-        <h1 className="text-4xl font-bold mb-8">Discover Amazing Art</h1>
-        <div className="flex items-center justify-center relative">
+      <h1 className="text-4xl font-bold mb-9 ml-4 mt-4">
+        Discover Amazing Art
+      </h1>
+      <div className="container mx-auto p-8">
+  <div className="flex items-center justify-center px-5 space-x-6">
+    <div className="flex items-center justify-center relative w-1/2 h-120">
           <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
             <FontAwesomeIcon
               icon={faAngleLeft}
@@ -211,8 +215,8 @@ function Home() {
           {currentPost && (
             <div className="bg-white shadow-lg rounded-lg overflow-hidden">
               <img
-                src={currentPost.photo}
-                alt={currentPost.postName}
+                src={currentPost?.photo}
+                alt={currentPost?.postName}
                 className="w-full h-96 object-cover"
               />
               <div className="p-4">
@@ -224,8 +228,6 @@ function Home() {
                   <p className="text-lg font-semibold text-green-500">
                     ₹ {currentPost.price}
                   </p>
-                  {/* <button onClick={handleShowModal}></button> */}
-                  {/* <p>Selected Payment Method: {selectedPaymentMethod || 'None selected'}</p> */}
                   <button
                     className="ml-4 bg-blue-500 text-white px-3 py-1 rounded-md"
                     onClick={() =>
@@ -235,17 +237,44 @@ function Home() {
                     Buy Now
                   </button>
                 </div>
-              
               </div>
             </div>
           )}
         </div>
+        <div className="flex items-center justify-center relative w-1/2 h-120">
+          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+            <img
+              src={currentPost?.photo}
+              alt={currentPost?.postName}
+              className="w-full h-96 object-cover"
+            />
+            <div className="p-4">
+              <h2 className="text-xl font-semibold">{currentPost?.postName}</h2>
+              <p className="text-gray-600">By {currentPost?.artist?.name}</p>
+              <div className="mt-2 flex items-center">
+                <p className="text-lg font-semibold text-green-500">
+                  ₹ {currentPost?.price}
+                </p>
+                <button
+                  className="ml-4 bg-blue-500 text-white px-3 py-1 rounded-md"
+                  onClick={() =>
+                    handleShowModal(currentPost?.price, currentPost?._id)
+                  }
+                >
+                  Buy Now
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
       </div>
+
       <div className="flex justify-center">
         <div className="w-full max-w-[1269px] mx-4 md:mx-auto mt-4">
           <div className="flex flex-wrap justify-between -mx-4">
             {posts.map((post) => (
-              <div className="w-1/3 p-4" key={post._id}>
+              <div className="w-full sm:w-1/2 md:w-1/3 p-4" key={post._id}>
                 <div
                   className="max-w-sm rounded overflow-hidden shadow-lg"
                   style={{ height: "400px" }}
@@ -297,7 +326,6 @@ function Home() {
                     >
                       Buy Now
                     </button>
-                   
                   </div>
                   {openCommentBoxes[post._id] && (
                     <div className="px-6 flex items-center">

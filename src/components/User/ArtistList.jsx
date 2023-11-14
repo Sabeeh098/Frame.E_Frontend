@@ -10,7 +10,7 @@ const ArtistList = ({ searchTerm }) => {
   const userId = useSelector((state) => state.user.id);
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  console.log(artists)
   const createChat = async (artistId) => {
     navigate(`/chat/${artistId}`);
     await userAxiosInstance.post(

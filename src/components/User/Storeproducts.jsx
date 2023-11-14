@@ -7,18 +7,31 @@ function Storeproducts() {
   const token = useSelector((state) => state.user.token);
   const [products, setProducts] = useState([]);
   const [userAddress, setUserAddress] = useState("");
-  console.log(products,userAddress)
+  const [quantities, setQuantities] = useState({}); // Use an object to store quantity for each product
+console.log(products)
+  const handleQuantityChange = (productId, newQuantity) => {
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [productId]: newQuantity,
+    }));
+  };
+
 
   const handleBuyNowClick = async (product) => {
     try {
+      const selectedQuantity = quantities[product._id] || 1;
+      const totalPrice = product.price * selectedQuantity;
+  
       const orderData = {
-        price: product.price,
-        id: userId, 
+        price: totalPrice,
+        id: userId,
+        // token :token,
         productId: product._id,
-        address: userAddress, 
+        address: userAddress,
+        quantity: selectedQuantity,
       };
+      console.log(orderData)
 
-      // Make the POST request to create the order.
      userAxiosInstance.post('/order', orderData, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -86,6 +99,18 @@ function Storeproducts() {
                   ₹ {product.price}
                 </span>
               </p>
+              <label className="text-sm">
+                Quantity:
+                <input
+                  type="number"
+                  min="1"
+                  value={quantities[product._id] || 1} // Use the quantity from state
+                  onChange={(e) =>
+                    handleQuantityChange(product._id, e.target.value)
+                  }
+                  className="ml-2 border border-gray-300 rounded-md p-1 text-center w-12"
+                />
+              </label>
             </div>
             <a
   href="#"

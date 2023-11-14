@@ -17,7 +17,8 @@ import Store from './pages/user/Store';
 import Products from './pages/admin/Products';
 import UserProfile from './pages/user/UserProfile';
 import ChatIcon from './components/layouts/ChatIcon';
-import ChatPage from './components/ChatPage';
+
+import ChattingPage from './pages/user/ChattingPage';
 import ArtistChat from './pages/artist/ArtistChat'
 import PaymentModal from './components/User/PaymentModal';
 import PaySuccess from './components/User/PaySuccess';
@@ -29,6 +30,8 @@ import VisualArts from './components/Artist/VisualArts';
 import Comments from './pages/admin/Comments';
 import OrdersPage from './pages/artist/OrdersPage';
 import AdminLogin from './components/AdminLogin';
+import ChatPage from './components/ChatPage';
+import OrdersPageAdmin from './pages/admin/OrdersPageAdmin';
 
 
 
@@ -58,7 +61,7 @@ function App() {
           <Route path="/store" element={<Store/>} />
           <Route path="/specificartist" element={<SpecificArtist/>} />
           <Route path="/profile" element={<UserProfile/>} />
-          <Route path="/chat/:artistId" element={<ChatPage senderRole={"User"}/>} />
+          <Route path="/chat/:artistId" element={<ChattingPage />} />
           <Route path="/chat" element={<ChatPage senderRole={"User"} />} />
           <Route path="/paymentSuccess" element={<PaySuccess/>} />
           <Route path="/paymentFailed" element={<PayFailed/>} />
@@ -72,7 +75,8 @@ function App() {
           {/* <Route path="/artist/login" element={artistAuth !== null ? <Navigate to="/artist/"/> : <Login name='artist' url='/artist/login'/>} /> */}
           <Route path="/artist/login" element={artistAuth !== null ? <Navigate to="/artist/"/> : <Login name='artist' url='login'/>} />
           <Route path="/artist/profile" element={<Profile />} />
-          <Route path="/artist/chat" element={<ArtistChat senderRole={'Artist'} />} />
+          {/* <Route path="/artist/chat" element={<ArtistChat />} /> */}
+          <Route path="/artist/chat" element={<ArtistChat />} />
           {/* <Route path="/artist/visualsArts" element={<VisualArts />} /> */}
          
 
@@ -87,6 +91,7 @@ function App() {
         <Route path="/admin/artists"  element={<Artistfull/>}/>
         <Route path="/admin/products"  element={<Products/>}/>
         <Route path="/admin/comments"  element={<Comments/>}/>
+        <Route path="/admin/orders"  element={<OrdersPageAdmin/>}/>
     
 
         </Routes>

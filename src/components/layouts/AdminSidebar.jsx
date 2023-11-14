@@ -50,6 +50,12 @@ function AdminSidebar({children}) {
             >
               Comments
             </Link>
+            <Link
+              to="/admin/orders"
+              className="block hover:bg-gray-600 px-4 py-2 rounded transition duration-300"
+            >
+              Orders
+            </Link>
             {/* Add more navigation links */}
           </nav>
         </aside>
