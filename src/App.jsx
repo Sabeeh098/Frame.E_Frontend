@@ -43,8 +43,8 @@ function App() {
   const userAuth = useSelector((state)=> state.user.token)
   const artistAuth = useSelector((state)=> state.artist.token) 
   const adminAuth = useSelector((state)=>state.admin.token)
-  console.log(userAuth)
-  console.log(artistAuth);
+  // console.log(userAuth)
+  // console.log(artistAuth);
   return (
     <Router>
       <div className="App">

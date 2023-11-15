@@ -62,7 +62,7 @@ const Login = ({ url, name }) => {
     const errors = validateFormData();
     e.preventDefault();
   
-    // Determine the Axios instance to use based on the name prop
+    
     const axiosInstance = name === "artist" ? artistAxiosInstance : userAxiosInstance;
   
     if (Object.keys(errors).length === 0) {
