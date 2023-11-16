@@ -1,5 +1,5 @@
 
-export const UserAPI ='https://api.shoesdeck.online'  
+export const UserAPI ='https://api.shoesdeck.online/'  
 export const artistAPI = 'https://api.shoesdeck.online/artist/' 
 export const adminAPI = 'https://api.shoesdeck.online/admin/' 
 
