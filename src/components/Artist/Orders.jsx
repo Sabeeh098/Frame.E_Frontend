@@ -86,15 +86,14 @@ function Orders() {
 
       {/* Modal for Approval */}
       {selectedOrder && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeModal}>
-              &times;
-            </span>
-            <p>Are you sure you want to approve this order?</p>
-            <button onClick={handleApprove}>Approve</button>
-          </div>
-        </div>
+       <div className="modal bg-black text-white p-4">
+       <div className="modal-content">
+         <span className="close" onClick={closeModal}>&times;</span>
+         <p>Are you sure you want to approve this order?</p>
+         <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleApprove}>Approve</button>
+       </div>
+     </div>
+     
       )}
     </div>
   );
