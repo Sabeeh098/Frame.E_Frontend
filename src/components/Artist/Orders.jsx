@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { artistAxiosInstance } from "../../api/axios";
 import { useSelector } from "react-redux";
-import axios from "axios";
+
 
 function Orders() {
   const token = useSelector((state) => state.artist.token);
