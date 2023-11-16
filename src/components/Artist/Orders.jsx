@@ -6,7 +6,6 @@ function Orders() {
   const token = useSelector((state) => state.artist.token);
   console.log(token);
   const [orders, setOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     fetchOrders();
@@ -26,29 +25,18 @@ function Orders() {
     }
   };
 
-  const handleApprove = async () => {
+  const handleApprove = async (orderId) => {
     try {
       // Update the order status to "delivered" in the backend
-      await artistAxiosInstance.put(`approve/${selectedOrder._id}`, {
+      await artistAxiosInstance.put(`approve/${orderId}`, {
         status: "delivered",
       });
 
       // Fetch updated orders after approval
       fetchOrders();
-
-      // Close the modal
-      setSelectedOrder(null);
     } catch (error) {
       console.error("Error approving order:", error);
     }
-  };
-
-  const openModal = (order) => {
-    setSelectedOrder(order);
-  };
-
-  const closeModal = () => {
-    setSelectedOrder(null);
   };
 
   return (
@@ -76,25 +64,13 @@ function Orders() {
               <td>{order.ShippingAddress}</td>
               <td>
                 {order.status === "pending" && (
-                  <button onClick={() => openModal(order)}>Approve</button>
+                  <button onClick={() => handleApprove(order._id)}>Approve</button>
                 )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      {/* Modal for Approval */}
-      {selectedOrder && (
-       <div className="modal bg-black text-white p-4">
-       <div className="modal-content">
-         <span className="close" onClick={closeModal}>&times;</span>
-         <p>Are you sure you want to approve this order?</p>
-         <button className="bg-blue-500 text-white px-4 py-2 rounded" onClick={handleApprove}>Approve</button>
-       </div>
-     </div>
-     
-      )}
     </div>
   );
 }
