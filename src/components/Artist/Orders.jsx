@@ -11,14 +11,15 @@ function Orders() {
   useEffect(() => {
     fetchOrders();
   }, []);
-
+  
   const fetchOrders = async () => {
     try {
-     const response = await axios.get("http://localhost:4000/artist/order", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+     const response = await artistAxiosInstance.get("/order", {
+       headers: {
+         Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data.orders);
 
       setOrders(response.data.orders);
     } catch (error) {
@@ -33,7 +34,7 @@ function Orders() {
         <thead>
           <tr>
             <th></th>
-            <th>User Name</th>
+    
             <th>Post Name</th>
             <th>Price</th>
             <th>Status</th>
@@ -44,14 +45,15 @@ function Orders() {
           {/* Rows based on fetched orders */}
           {orders.map((order, index) => (
             <tr key={index}>
-              <th>{index + 1}</th>
-              <td>{order.user.name}</td>
-              <td>{order.items.posts.postName}</td>
-              <td>${order.amount}</td>
-              <td>{order.status}</td>
-              <td>{order.ShippingAddress}</td>
-            </tr>
-          ))}
+    <th>{index + 1}</th>
+    <td>{order.items[0]?._id ? order.items[0]._id.toString().substring(0, 6) : "N/A"}</td>
+    <td>{order.amount}</td>
+    <td>{order.status}</td>
+    <td>{order.ShippingAddress}</td>
+  </tr>
+))}
+
+
         </tbody>
       </table>
     </div>

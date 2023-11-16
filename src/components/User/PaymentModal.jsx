@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { userAxiosInstance } from '../../api/axios';
 
-function PaymentModal({token,show, onHide, onSelectPayment, onSelectAddress,price,postId }) {
+function PaymentModal({token,show, onHide, onSelectPayment, onSelectAddress,price,postI, }) {
   const [paymentMethod, setPaymentMethod] = useState('cash-on-delivery');
     const [profile, setProfile] = useState([])
    
@@ -11,7 +11,11 @@ function PaymentModal({token,show, onHide, onSelectPayment, onSelectAddress,pric
     const handleSelectPayment = () => {
       try{
 
-        userAxiosInstance.post('/payment',{price, id:profile._id, postId: [{ post: postId }], address:profile.address},{
+        userAxiosInstance.post('/payment',{ price,
+          id: profile._id,
+          postId: [{ post: postId }],
+          artistId: pay.artistId, 
+          address: profile.address},{
           headers: {
             Authorization: `Bearer ${token}`,
           },

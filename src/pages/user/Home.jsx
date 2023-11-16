@@ -33,9 +33,10 @@ function Home() {
   console.log(posts);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = (price, postId) => {
-    setPay({ price: price, postId: postId });
+   setPay({ price: price, postId: postId});
     setShowModal(true);
   };
+  
 
   useEffect(() => {
     fetchPosts();
@@ -151,6 +152,7 @@ function Home() {
           postId={pay.postId}
           onHide={handleCloseModal}
           token={token}
+         
           // onSelectPaymentMethod={handlePaymentMethodSelection}
         />
       )}
@@ -231,7 +233,7 @@ function Home() {
                   <button
                     className="ml-4 bg-blue-500 text-white px-3 py-1 rounded-md"
                     onClick={() =>
-                      handleShowModal(currentPost.price, currentPost._id)
+                      handleShowModal(currentPost.price, currentPost._id, currentPost?.artist?._id)
                     }
                   >
                     Buy Now

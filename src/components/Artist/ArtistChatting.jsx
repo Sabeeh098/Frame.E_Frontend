@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { io } from 'socket.io-client';
 
-// import { artistAPI } from "../../constants/api";
+
 import { artistAxiosInstance } from "../../api/axios";
 import { socketConnection } from "../../context/ChatContext";
 
@@ -28,90 +28,6 @@ function ArtistChatting({ senderRole }) {
   const location = useLocation();
   const chatContainerRef = useRef(null);
  
-//   useEffect(() => {
-//     const newSocket = io('http://localhost:4000/artist/');
-//     console.log(newSocket);
-//     setSocket(newSocket);
-  
-//     newSocket.on("connect", () => {
-//       console.log("Socket connected:", newSocket.id);
-//     });
-  
-//     newSocket.on("error", (error) => {
-//       console.error("Socket error:", error);
-//     });
-  
-  
-//     return () => {
-//       newSocket.disconnect();
-//     };
-//   }, [artistAPI]);
-  
-  
-//   useEffect(() => {
-//     if (socket && selectedChat) {
-//       console.log(socket,selectedChat)
-//       socket.emit("join_room", selectedChat._id);
-//       socket.on("message_response", (newMessage) => {
-//         setAllMessages((prevMessages) => [...prevMessages, newMessage]);
-//       });
-//     }
-//   }, [selectedChat, socket, artistAPI]);
-
-
-
-//   const sendMessage = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const newMessageData = {
-//         chatId: selectedChat._id,
-//         content: newMessage,
-//         senderRole,
-//         senderId: { _id: artistId },
-//         time: new Date(),
-//       };
-//       socket.emit(`send_message`, newMessageData, selectedChat._id);
-//       setNewMessage('');
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-  
-//   useEffect(() => {
-//     async function fetchChat() {
-//       await artistAxiosInstance.get(
-//         `/fetchChats?artistId=${artistId}&senderRole=${senderRole}`,
-//         {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       ).then((res) => {
-//         setInboxChats(res.data.chatList)
-//       });
-//     }
-//     fetchChat();
-//   }, [senderRole]);
-  
-
-//   const openChatBox = (selectedChat) => {
-
-//     setSelectedChat(selectedChat);
-//     setIsChatOpen(true);
-//       artistAxiosInstance.get(`/openChat?chatId=${selectedChat._id}`,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     ).then((res) => {
-//         setAllMessages(res.data.allMessages);
-//       })
-    
-//   }
-
-
-  ////////////////////////////////////
 
 
   const timeFormat  = (timeStamp) => {
@@ -133,7 +49,7 @@ function ArtistChatting({ senderRole }) {
   useEffect(() => {
     const fetchChat = async () => {
       try {
-        // Display spinner while fetching chats
+        
         setIsLoadingChats(true);
   
         const response = await artistAxiosInstance.get(
@@ -149,7 +65,7 @@ function ArtistChatting({ senderRole }) {
       } catch (error) {
         console.error("Error fetching chats:", error);
       } finally {
-        // Hide spinner after fetching is done (success or error)
+      
         setIsLoadingChats(false);
       }
     };
