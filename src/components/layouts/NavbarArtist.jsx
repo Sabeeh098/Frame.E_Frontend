@@ -28,9 +28,9 @@ function NavbarArtist() {
       </svg>
     </label>
     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white text-black-900 rounded-box w-52">
-      <li><a>POSTS</a></li>
-      <li><a>ORDERS</a></li>
-      <li><a>PROFILE</a></li>
+      <li><a onClick={() => navigate("/artist/")}>POSTS</a></li>
+      <li><a onClick={() => navigate("/artist/orders")} >ORDERS</a></li>
+      <li><a onClick={() => navigate("/artist/profile")}>PROFILE</a></li>
     </ul>
   </div>
   {/* <img src={logo} alt="Logo" className="h-12 w-79" /> */}
