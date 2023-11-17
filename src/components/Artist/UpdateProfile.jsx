@@ -12,7 +12,7 @@ function UpdateProfile({ onClose, token , profile}) {
 
   const [photo, setPhoto] = useState(null);
  
-  const [artCategories, setArtCategories] = useState(profile.artCategories);
+  const [artCategories, setArtCategories] = useState(profile.artCategories || []);
   const [newCategory, setNewCategory] = useState("");
   
   const handleCategoryAdd = () => {
