@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { userAxiosInstance } from '../../api/axios';
 
-function PaymentModal({token,show, onHide, onSelectPayment, onSelectAddress,price,postI, }) {
+function PaymentModal({token,show, onHide, onSelectPayment, onSelectAddress,price,postId, }) {
   const [paymentMethod, setPaymentMethod] = useState('cash-on-delivery');
     const [profile, setProfile] = useState([])
    
