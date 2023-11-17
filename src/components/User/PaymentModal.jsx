@@ -25,9 +25,7 @@ function PaymentModal({token,show, onHide, onSelectPayment, onSelectAddress,pric
       } catch (error){
         console.log("Errrrrror",error)
       }
-        // onSelectPayment(paymentMethod);
-        // onSelectAddress(address);
-        // onHide();
+ 
     };
   const fetchProfile = async () => {
     try {
