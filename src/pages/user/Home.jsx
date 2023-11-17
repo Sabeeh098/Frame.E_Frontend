@@ -20,6 +20,7 @@ function Home() {
 
   const [currentPostIndex, setCurrentPostIndex] = useState(0);
   const [posts, setPosts] = useState([]);
+  const [artists, setArtists] = useState([]);
   const [likedPost, setLikedPost] = useState([]);
   const [openCommentBoxes, setOpenCommentBoxes] = useState({});
   const [commentText, setCommentText] = useState("");
@@ -30,13 +31,33 @@ function Home() {
     price: "",
     postId: "",
   });
+  const [currentArtistIndex, setCurrentArtistIndex] = useState(0);
+
+  const handleArtistClick = () => {
+    setCurrentArtistIndex((prevIndex) =>
+      prevIndex === artists.length - 1 ? 0 : prevIndex + 1
+    );
+  };
   console.log(posts);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = (price, postId) => {
-   setPay({ price: price, postId: postId});
+    setPay({ price: price, postId: postId });
     setShowModal(true);
   };
-  
+  useEffect(() => {
+    userAxiosInstance
+      .get("/artists", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setArtists(response.data.artist);
+      })
+      .catch((error) => {
+        console.log("Error fetching", error);
+      });
+  }, [token]);
 
   useEffect(() => {
     fetchPosts();
@@ -152,7 +173,7 @@ function Home() {
           postId={pay.postId}
           onHide={handleCloseModal}
           token={token}
-         
+
           // onSelectPaymentMethod={handlePaymentMethodSelection}
         />
       )}
@@ -194,81 +215,80 @@ function Home() {
         </div>
       </div>
 
+     
+    
       <h1 className="text-4xl font-bold mb-9 ml-4 mt-4">
-        Discover Amazing Art
-      </h1>
-      <div className="container mx-auto p-8">
-  <div className="flex items-center justify-center px-5 space-x-6">
-    <div className="flex items-center justify-center relative w-1/2 h-120">
-          <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
-            <FontAwesomeIcon
-              icon={faAngleLeft}
-              className="text-black-500 text-6xl cursor-pointer"
-              onClick={goToPreviousPost}
-            />
-          </div>
-          <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
-            <FontAwesomeIcon
-              icon={faAngleRight}
-              className="text-black-500 text-6xl cursor-pointer"
-              onClick={goToNextPost}
-            />
-          </div>
-          {currentPost && (
-            <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-              <img
-                src={currentPost?.photo}
-                alt={currentPost?.postName}
-                className="w-full h-96 object-cover"
+    Discover Amazing Art
+  </h1>
+  <div className="container mx-auto p-8">
+    <div className="flex items-center justify-center px-5 space-x-80">
+      <div className="flex items-center justify-center relative w-1/2 h-120">
+            <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
+              <FontAwesomeIcon
+                icon={faAngleLeft}
+                className="text-black-500 text-6xl cursor-pointer"
+                onClick={goToPreviousPost}
               />
-              <div className="p-4">
-                <h2 className="text-xl font-semibold">
-                  {currentPost.postName}
-                </h2>
-                <p className="text-gray-600">By {currentPost?.artist?.name}</p>
-                <div className="mt-2 flex items-center">
-                  <p className="text-lg font-semibold text-green-500">
-                    ₹ {currentPost.price}
+            </div>
+            <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+              <FontAwesomeIcon
+                icon={faAngleRight}
+                className="text-black-500 text-6xl cursor-pointer"
+                onClick={goToNextPost}
+              />
+            </div>
+            {currentPost && (
+              <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                <img
+                  src={currentPost?.photo}
+                  alt={currentPost?.postName}
+                  className="w-full h-96 object-cover"
+                />
+                <div className="p-4">
+                  <h2 className="text-xl font-semibold">
+                    {currentPost.postName}
+                  </h2>
+                  <p className="text-gray-600">
+                    By {currentPost?.artist?.name}
                   </p>
-                  <button
-                    className="ml-4 bg-blue-500 text-white px-3 py-1 rounded-md"
-                    onClick={() =>
-                      handleShowModal(currentPost.price, currentPost._id, currentPost?.artist?._id)
-                    }
-                  >
-                    Buy Now
-                  </button>
+                  <div className="mt-2 flex items-center">
+                    <p className="text-lg font-semibold text-green-500">
+                      ₹ {currentPost.price}
+                    </p>
+                    <button
+                      className="ml-4 bg-blue-500 text-white px-3 py-1 rounded-md"
+                      onClick={() =>
+                        handleShowModal(
+                          currentPost.price,
+                          currentPost._id,
+                          currentPost?.artist?._id
+                        )
+                      }
+                    >
+                      Buy Now
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
-        <div className="flex items-center justify-center relative w-1/2 h-120">
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+            )}
+          </div>
+          <div className="flex flex-col items-center justify-center relative w-3/4 h-96 cursor-pointer">
+        <h1 className="text-4xl font-bold mb-4 mt-4">
+          Explore the Famous Artists
+        </h1>
+        {artists.length > 0 && (
+          <div
+        className="flex flex-col items-center justify-center relative w-3/4 h-96 cursor-pointer"
+        onClick={handleArtistClick}
+      >
             <img
-              src={currentPost?.photo}
-              alt={currentPost?.postName}
+              src={artists[currentArtistIndex]?.profilePicture}
+              alt={artists[currentArtistIndex]?.name}
               className="w-full h-96 object-cover"
             />
-            <div className="p-4">
-              <h2 className="text-xl font-semibold">{currentPost?.postName}</h2>
-              <p className="text-gray-600">By {currentPost?.artist?.name}</p>
-              <div className="mt-2 flex items-center">
-                <p className="text-lg font-semibold text-green-500">
-                  ₹ {currentPost?.price}
-                </p>
-                <button
-                  className="ml-4 bg-blue-500 text-white px-3 py-1 rounded-md"
-                  onClick={() =>
-                    handleShowModal(currentPost?.price, currentPost?._id)
-                  }
-                >
-                  Buy Now
-                </button>
-              </div>
-            </div>
           </div>
-        </div>
+        )}
+      </div>
         </div>
       </div>
 
