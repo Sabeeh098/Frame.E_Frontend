@@ -61,16 +61,7 @@ function PaymentModal({token,show, onHide, onSelectPayment, onSelectAddress,pric
           <div className="mt-4">
             <label className="block text-gray-700">Select a payment method:</label>
             <div className="mt-2">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  className="form-radio h-5 w-5 text-blue-600"
-                  value="cash-on-delivery"
-                  checked={paymentMethod === 'cash-on-delivery'}
-                  onChange={() => setPaymentMethod('cash-on-delivery')}
-                />
-                <span className="ml-2">Cash on Delivery</span>
-              </label>
+              
               <label className="flex items-center mt-2">
                 <input
                   type="radio"
