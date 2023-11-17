@@ -14,7 +14,6 @@ function PaymentModal({token,show, onHide, onSelectPayment, onSelectAddress,pric
         userAxiosInstance.post('/payment',{ price,
           id: profile._id,
           postId: [{ post: postId }],
-          artistId: pay.artistId, 
           address: profile.address},{
           headers: {
             Authorization: `Bearer ${token}`,
