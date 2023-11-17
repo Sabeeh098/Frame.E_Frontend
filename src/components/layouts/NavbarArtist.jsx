@@ -49,7 +49,6 @@ function NavbarArtist() {
 
 
   <div className="navbar-end">
-  <FaBell className="mr-2" />
 <Link to="/artist/chat">
   <FaBell className="mr-2" />
 </Link>
